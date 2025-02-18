@@ -3,133 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login Santri</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
         body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(to right, #ff7e5f, #feb47b);
         }
-
         .login-container {
-            background: white;
+            background-color: #fff;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
             width: 300px;
+            text-align: center;
         }
-
-        .login-container h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .input-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .input-group input {
+        input, button {
             width: 100%;
             padding: 10px;
+            margin: 10px 0;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 4px;
         }
-
-        .input-group input:focus {
-            border-color: #ff7e5f;
-            outline: none;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 10px;
-            background: #ff7e5f;
+        button {
+            background-color: #4CAF50;
             color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
             cursor: pointer;
-            transition: 0.3s;
         }
-
-        .login-btn:hover {
-            background: #e06b55;
-        }
-
-        .error-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-
     <div class="login-container">
-        <h2>Login</h2>
-        <div class="input-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Masukkan username">
-            <div class="error-message" id="username-error">Username wajib diisi!</div>
-        </div>
-
-        <div class="input-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Masukkan password">
-            <div class="error-message" id="password-error">Password wajib diisi!</div>
-        </div>
-
-        <button class="login-btn" onclick="validateLogin()">Login</button>
+        <h2>Login Santri</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="message"></p>
     </div>
 
     <script>
-        // Daftar akun yang valid
-        const users = [
-            { username: "admin", password: "12345" },
-            { username: "user1", password: "password1" },
-            { username: "user2", password: "password2" },
-            { username: "joni", password: "rahasia" }
-        ];
+        // Konfigurasi Supabase
+        const SUPABASE_URL = "https://xxxx.supabase.co"; // Ganti dengan URL Supabase kamu
+        const SUPABASE_KEY = "public-anon-key"; // Ganti dengan API Key Supabase kamu
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        function validateLogin() {
+        async function login() {
             let username = document.getElementById("username").value;
             let password = document.getElementById("password").value;
-            let usernameError = document.getElementById("username-error");
-            let passwordError = document.getElementById("password-error");
 
-            usernameError.style.display = username === "" ? "block" : "none";
-            passwordError.style.display = password === "" ? "block" : "none";
+            // Cek username di database
+            let { data, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('username', username)
+                .single();
 
-            // Cek apakah username dan password ada dalam daftar users
-            let userFound = users.find(user => user.username === username && user.password === password);
+            if (error || !data) {
+                document.getElementById("message").innerText = "Username tidak ditemukan!";
+                return;
+            }
 
-            if (userFound) {
-                alert("Login Berhasil! Selamat datang, " + username);
-                window.location.href = "Home.html"; // Ganti dengan halaman setelah login
+            // Cek password (sementara langsung cek string)
+            if (data.password === password) {
+                localStorage.setItem("user", username);
+                window.location.href = "dashboard.html"; // Redirect ke dashboard
             } else {
-                alert("Username atau Password salah!");
+                document.getElementById("message").innerText = "Password salah!";
             }
         }
     </script>
-
 </body>
 </html>
