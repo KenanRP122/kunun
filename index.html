@@ -49,10 +49,10 @@
     </div>
 
     <script>
-        // Konfigurasi Supabase
-        const SUPABASE_URL = "https://xxxx.supabase.co"; // Ganti dengan URL Supabase kamu
-        const SUPABASE_KEY = "public-anon-key"; // Ganti dengan API Key Supabase kamu
+        const SUPABASE_URL = "https://bujkawljzkjralvepbpo.supabase.co"; // Ganti dengan URL Supabase kamu
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1amthd2xqemtqcmFsdmVwYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk4ODU0NTksImV4cCI6MjA1NTQ2MTQ1OX0.xjuM_Sbyd2PIYAJcn4soyWdo_C7k-Ob4_yW3lXZfPA4"; // Ganti dengan API Key Anon Public kamu
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 
         async function login() {
             let username = document.getElementById("username").value;
@@ -70,7 +70,7 @@
                 return;
             }
 
-            // Cek password (sementara langsung cek string)
+            // Cek password
             if (data.password === password) {
                 localStorage.setItem("user", username);
                 window.location.href = "dashboard.html"; // Redirect ke dashboard
