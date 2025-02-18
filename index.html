@@ -1,58 +1,29 @@
+<!-- login.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Santri</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .login-container {
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            width: 300px;
-            text-align: center;
-        }
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <title>Login</title>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login Santri</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="login()">Login</button>
-        <p id="message"></p>
-    </div>
+    <h1>Login</h1>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <br>
+        <button type="button" onclick="login()">Login</button>
+    </form>
+    <p id="message"></p>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> <!-- Supabase SDK -->
     <script>
-        const SUPABASE_URL = "https://bujkawljzkjralvepbpo.supabase.co"; // Ganti dengan URL Supabase kamu
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1amthd2xqemtqcmFsdmVwYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk4ODU0NTksImV4cCI6MjA1NTQ2MTQ1OX0.xjuM_Sbyd2PIYAJcn4soyWdo_C7k-Ob4_yW3lXZfPA4"; // Ganti dengan API Key Anon Public kamu
+        const SUPABASE_URL = "https://bujkawljzkjralvepbpo.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1amthd2xqemtqcmFsdmVwYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk4ODU0NTksImV4cCI6MjA1NTQ2MTQ1OX0.xjuM_Sbyd2PIYAJcn4soyWdo_C7k-Ob4_yW3lXZfPA4";
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
 
         async function login() {
             let username = document.getElementById("username").value;
@@ -72,8 +43,8 @@
 
             // Cek password
             if (data.password === password) {
-                localStorage.setItem("user", username);
-                window.location.href = "dashboard.html"; // Redirect ke dashboard
+                localStorage.setItem("user", username); // Menyimpan username di localStorage
+                window.location.href = "Home.html"; // Redirect ke halaman Home
             } else {
                 document.getElementById("message").innerText = "Password salah!";
             }
