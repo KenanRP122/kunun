@@ -51,28 +51,34 @@
     </div>
 
     <script type="module">
-        import { createClient } from "https://esm.sh/@supabase/supabase-js";
+       import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-        // Masukkan URL & Anon Key Supabase kamu
-        const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
-        const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-        async function login() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+async function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
+    console.log("Login attempt with:", email, password); // Cek apakah tombol bekerja
 
-            if (error) {
-                document.getElementById("error").innerText = "Login gagal! Periksa kembali data Anda.";
-            } else {
-                window.location.href = "Home.html"; // Redirect ke halaman Home
-            }
-        }
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        console.error("Error:", error);
+        document.getElementById("error").innerText = "Login gagal! Periksa kembali data Anda.";
+    } else {
+        console.log("Login berhasil:", data);
+        window.location.href = "Home.html"; // Redirect ke halaman Home
+    }
+}
+
+document.querySelector("button").addEventListener("click", login);
+
     </script>
 
 </body>
