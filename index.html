@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Generasi 8</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Login Generasi 8</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,61 +11,66 @@
             background: linear-gradient(to right, #f96d00, #f9c74f);
             color: white;
         }
-        .container {
-            margin-top: 100px;
+        .login-container {
+            width: 300px;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            display: inline-block;
+            margin: 100px auto;
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
         }
         input {
-            width: 80%;
+            width: 90%;
             padding: 10px;
             margin: 10px 0;
             border: none;
             border-radius: 5px;
         }
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 10px;
             background: white;
+            color: #f96d00;
             border: none;
             border-radius: 5px;
-            font-weight: bold;
             cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #ddd;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="login-container">
         <h2>Login Generasi 8</h2>
-        <input type="email" id="email" placeholder="Masukkan Email"><br>
-        <input type="password" id="password" placeholder="Masukkan Password"><br>
+        <input type="email" id="email" placeholder="Masukkan Email">
+        <input type="password" id="password" placeholder="Masukkan Password">
         <button onclick="login()">Login</button>
-        <p id="message"></p>
+        <p id="error" style="color: red;"></p>
     </div>
 
-    <script>
+    <script type="module">
+        import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+        // Masukkan URL & Anon Key Supabase kamu
         const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
-        const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
-        
-        const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
         async function login() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
-            const message = document.getElementById("message");
 
             const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password
+                email: email,
+                password: password
             });
 
             if (error) {
-                message.innerText = "Login gagal: " + error.message;
+                document.getElementById("error").innerText = "Login gagal! Periksa kembali data Anda.";
             } else {
-                message.innerText = "Login berhasil!";
-                window.location.href = "Home.html"; // Arahkan ke halaman Home
+                window.location.href = "Home.html"; // Redirect ke halaman Home
             }
         }
     </script>
