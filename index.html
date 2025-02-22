@@ -53,48 +53,71 @@
         <input type="password" id="password" placeholder="Masukkan Password">
         <button id="submit-btn">Login</button>
         <p id="message" style="color: white;"></p>
-        <p class="toggle" onclick="toggleForm()">Belum punya akun? Daftar</p>
+        <p class="toggle" id="toggle-form">Belum punya akun? Daftar</p>
     </div>
 
     <script type="module">
         import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-        // Ganti dengan URL & anon key milik kamu
-        const supabaseUrl = "https://bujkawljzkjralvepbpo.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1amthd2xqemtqcmFsdmVwYnBvIiwicm9sSI6ImFub24iLCJpYXQiOjE3Mzk4ODU0NTksImV4cCI6MjA1NTQ2MTQ1OX0.xjuM_Sbyd2PIYAJcn4soyWdo_C7k-Ob4_yW3lXZfPA4";
+        // Konfigurasi Supabase
+        const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        let isLogin = true; // Mode awal = Login
+        const formTitle = document.getElementById("form-title");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const submitBtn = document.getElementById("submit-btn");
+        const message = document.getElementById("message");
+        const toggleForm = document.getElementById("toggle-form");
 
-        async function authAction() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            let response;
+        let isLogin = true; // Mode awal login
+
+        toggleForm.addEventListener("click", () => {
+            isLogin = !isLogin;
+            formTitle.innerText = isLogin ? "Login Generasi 8" : "Daftar Generasi 8";
+            submitBtn.innerText = isLogin ? "Login" : "Daftar";
+            toggleForm.innerText = isLogin ? "Belum punya akun? Daftar" : "Sudah punya akun? Login";
+        });
+
+        submitBtn.addEventListener("click", async () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                message.innerText = "Email dan Password wajib diisi!";
+                return;
+            }
+
+            message.innerText = "Sedang diproses...";
 
             if (isLogin) {
-                response = await supabase.auth.signInWithPassword({ email, password });
+                // LOGIN
+                const { error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) {
+                    message.innerText = "Login gagal! Periksa kembali data Anda.";
+                    console.error(error);
+                } else {
+                    message.innerText = "Login berhasil! Mengarahkan ke Home...";
+                    setTimeout(() => {
+                        window.location.href = "Home.html";
+                    }, 1500);
+                }
             } else {
-                response = await supabase.auth.signUp({ email, password });
+                // DAFTAR
+                const { error } = await supabase.auth.signUp({ email, password });
+                if (error) {
+                    message.innerText = "Pendaftaran gagal! Coba lagi.";
+                    console.error(error);
+                } else {
+                    message.innerText = "Pendaftaran berhasil! Silakan login.";
+                    isLogin = true;
+                    formTitle.innerText = "Login Generasi 8";
+                    submitBtn.innerText = "Login";
+                    toggleForm.innerText = "Belum punya akun? Daftar";
+                }
             }
-
-            if (response.error) {
-                document.getElementById("message").innerText = response.error.message;
-            } else {
-                document.getElementById("message").style.color = "yellow";
-                document.getElementById("message").innerText = isLogin ? "Login berhasil!" : "Pendaftaran berhasil! Cek email.";
-                if (isLogin) window.location.href = "Home.html"; // Redirect setelah login
-            }
-        }
-
-        function toggleForm() {
-            isLogin = !isLogin;
-            document.getElementById("form-title").innerText = isLogin ? "Login Generasi 8" : "Daftar Generasi 8";
-            document.getElementById("submit-btn").innerText = isLogin ? "Login" : "Daftar";
-            document.querySelector(".toggle").innerText = isLogin ? "Belum punya akun? Daftar" : "Sudah punya akun? Login";
-            document.getElementById("message").innerText = "";
-        }
-
-        document.getElementById("submit-btn").addEventListener("click", authAction);
+        });
     </script>
 
 </body>
