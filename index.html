@@ -4,6 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Generasi 8</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #f96d00, #f9c74f);
+            color: white;
+        }
+        .login-container {
+            width: 300px;
+            padding: 20px;
+            margin: 100px auto;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: white;
+            color: #f96d00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #ddd;
+        }
+        #error {
+            color: red;
+        }
+    </style>
     <script type="module">
         import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
@@ -25,23 +63,40 @@
                 document.getElementById("error").innerText = "Login gagal! " + error.message;
             } else {
                 console.log("Login berhasil:", data);
-                window.location.href = "Home.html"; // Redirect ke Home
+                window.location.href = "Home.html"; // Redirect ke Home setelah login
             }
         }
 
-        // Pastikan tombol login memiliki event listener
         document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("login-btn").addEventListener("click", login);
         });
     </script>
 </head>
 <body>
-    <div>
+
+    <div class="login-container">
         <h2>Login Generasi 8</h2>
         <input type="email" id="email" placeholder="Masukkan Email">
         <input type="password" id="password" placeholder="Masukkan Password">
         <button id="login-btn">Login</button>
-        <p id="error" style="color: red;"></p>
+        <p id="error"></p>
     </div>
+
+    <div>
+        <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/67acad233a842732607dd6be/1ijt88lks';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+    </div>
+
 </body>
 </html>
