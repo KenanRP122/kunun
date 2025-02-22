@@ -47,7 +47,7 @@
         <h2>Login</h2>
         <input type="email" id="email" placeholder="Masukkan Email">
         <input type="password" id="password" placeholder="Masukkan Password">
-        <button onclick="login()">Login</button>
+        <button id="login-btn">Login</button>
         <p id="error" style="color: red;"></p>
     </div>
 
@@ -57,7 +57,7 @@
         <input type="text" id="name" placeholder="Masukkan Nama">
         <input type="email" id="register-email" placeholder="Masukkan Email">
         <input type="password" id="register-password" placeholder="Masukkan Password">
-        <button onclick="register()">Daftar</button>
+        <button id="register-btn">Daftar</button>
         <p id="register-error" style="color: red;"></p>
     </div>
 
@@ -69,8 +69,8 @@
         const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1amthd2xqemtqcmFsdmVwYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk4ODU0NTksImV4cCI6MjA1NTQ2MTQ1OX0.xjuM_Sbyd2PIYAJcn4soyWdo_C7k-Ob4_yW3lXZfPA4";
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        // 🔹 FUNGSI LOGIN
-        async function login() {
+        // 🔹 LOGIN
+        document.getElementById("login-btn").addEventListener("click", async function () {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
@@ -82,10 +82,10 @@
                 console.log("Login berhasil:", data);
                 window.location.href = "Home.html"; // Redirect ke halaman utama
             }
-        }
+        });
 
-        // 🔹 FUNGSI DAFTAR
-        async function register() {
+        // 🔹 DAFTAR
+        document.getElementById("register-btn").addEventListener("click", async function () {
             const name = document.getElementById("name").value;
             const email = document.getElementById("register-email").value;
             const password = document.getElementById("register-password").value;
@@ -110,7 +110,7 @@
 
             alert("Pendaftaran berhasil! Silakan login.");
             window.location.reload();
-        }
+        });
     </script>
 
 </body>
