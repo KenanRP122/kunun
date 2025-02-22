@@ -3,24 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Daftar</title>
+    <title>Login & Daftar Generasi 8</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; }
-        .container { width: 300px; margin: 100px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        input, button { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; }
-        button { background: #28a745; color: white; border: none; cursor: pointer; }
-        button:hover { background: #218838; }
-        .toggle { cursor: pointer; color: blue; text-decoration: underline; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #f96d00, #f9c74f);
+            color: white;
+        }
+        .container {
+            width: 300px;
+            margin: 100px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: white;
+            color: #f96d00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #ddd;
+        }
+        .toggle {
+            cursor: pointer;
+            color: yellow;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2 id="form-title">Login</h2>
+        <h2 id="form-title">Login Generasi 8</h2>
         <input type="email" id="email" placeholder="Masukkan Email">
         <input type="password" id="password" placeholder="Masukkan Password">
         <button id="submit-btn">Login</button>
-        <p id="message" style="color: red;"></p>
+        <p id="message" style="color: white;"></p>
         <p class="toggle" onclick="toggleForm()">Belum punya akun? Daftar</p>
     </div>
 
@@ -29,7 +61,7 @@
 
         // Ganti dengan URL & anon key milik kamu
         const supabaseUrl = "https://bujkawljzkjralvepbpo.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1amthd2xqemtqcmFsdmVwYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk4ODU0NTksImV4cCI6MjA1NTQ2MTQ1OX0.xjuM_Sbyd2PIYAJcn4soyWdo_C7k-Ob4_yW3lXZfPA4";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1amthd2xqemtqcmFsdmVwYnBvIiwicm9sSI6ImFub24iLCJpYXQiOjE3Mzk4ODU0NTksImV4cCI6MjA1NTQ2MTQ1OX0.xjuM_Sbyd2PIYAJcn4soyWdo_C7k-Ob4_yW3lXZfPA4";
         const supabase = createClient(supabaseUrl, supabaseKey);
 
         let isLogin = true; // Mode awal = Login
@@ -48,15 +80,15 @@
             if (response.error) {
                 document.getElementById("message").innerText = response.error.message;
             } else {
-                document.getElementById("message").style.color = "green";
-                document.getElementById("message").innerText = isLogin ? "Login berhasil!" : "Pendaftaran berhasil! Cek email untuk verifikasi.";
-                if (isLogin) window.location.href = "home.html"; // Redirect ke halaman home setelah login
+                document.getElementById("message").style.color = "yellow";
+                document.getElementById("message").innerText = isLogin ? "Login berhasil!" : "Pendaftaran berhasil! Cek email.";
+                if (isLogin) window.location.href = "Home.html"; // Redirect setelah login
             }
         }
 
         function toggleForm() {
             isLogin = !isLogin;
-            document.getElementById("form-title").innerText = isLogin ? "Login" : "Daftar";
+            document.getElementById("form-title").innerText = isLogin ? "Login Generasi 8" : "Daftar Generasi 8";
             document.getElementById("submit-btn").innerText = isLogin ? "Login" : "Daftar";
             document.querySelector(".toggle").innerText = isLogin ? "Belum punya akun? Daftar" : "Sudah punya akun? Login";
             document.getElementById("message").innerText = "";
