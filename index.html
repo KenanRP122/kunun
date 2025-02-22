@@ -52,39 +52,31 @@
     </div>
 
     <script type="module">
-        import { createClient } from "https://esm.sh/@supabase/supabase-js";
+    import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-        const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
-        const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-        async function login() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+    async function login() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
 
-            if (error) {
-                console.error("Error:", error.message);
-                document.getElementById("error").innerText = "Login gagal! " + error.message;
-                return;
-            }
-
-            // Cek apakah email sudah dikonfirmasi
-            const { data: userData, error: userError } = await supabase.auth.getUser();
-
-            if (userError || !userData.user.email_confirmed_at) {
-                document.getElementById("error").innerText = "Akun belum dikonfirmasi. Silakan cek email Anda.";
-                return;
-            }
-
-            // Jika berhasil, redirect ke Home.html
-            window.location.href = "Home.html";
+        if (error) {
+            console.error("Login Error:", error.message);
+            document.getElementById("error").innerText = "Login gagal! " + error.message;
+        } else {
+            console.log("Login berhasil:", data);
+            window.location.href = "Home.html"; // Redirect setelah login
         }
-    </script>
+    }
+</script>
+
 
 </body>
 </html>
