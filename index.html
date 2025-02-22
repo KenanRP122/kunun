@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Generasi 8</title>
+    <title>Login & Daftar - Generasi 8</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,8 +64,9 @@
     <script type="module">
         import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-        const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
+        // 🔹 Gunakan Supabase URL & Anon Key yang kamu berikan
+        const supabaseUrl = "https://bujkawljzkjralvepbpo.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1amthd2xqemtqcmFsdmVwYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk4ODU0NTksImV4cCI6MjA1NTQ2MTQ1OX0.xjuM_Sbyd2PIYAJcn4soyWdo_C7k-Ob4_yW3lXZfPA4";
         const supabase = createClient(supabaseUrl, supabaseKey);
 
         // 🔹 FUNGSI LOGIN
