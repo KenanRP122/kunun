@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Daftar - Supabase</title>
+    <title>Login Generasi 8</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
         .container {
             width: 300px;
             padding: 20px;
-            margin: 100px auto;
+            margin: 50px auto;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
         }
@@ -42,62 +42,33 @@
 </head>
 <body>
 
-    <!-- Form Daftar -->
+    <!-- FORM LOGIN -->
+    <div class="container">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Masukkan Email">
+        <input type="password" id="password" placeholder="Masukkan Password">
+        <button onclick="login()">Login</button>
+        <p id="error" style="color: red;"></p>
+    </div>
+
+    <!-- FORM DAFTAR -->
     <div class="container">
         <h2>Daftar</h2>
         <input type="text" id="name" placeholder="Masukkan Nama">
         <input type="email" id="register-email" placeholder="Masukkan Email">
         <input type="password" id="register-password" placeholder="Masukkan Password">
         <button onclick="register()">Daftar</button>
-        <p id="register-error"></p>
-    </div>
-
-    <!-- Form Login -->
-    <div class="container">
-        <h2>Login</h2>
-        <input type="email" id="email" placeholder="Masukkan Email">
-        <input type="password" id="password" placeholder="Masukkan Password">
-        <button onclick="login()">Login</button>
-        <p id="login-error"></p>
+        <p id="register-error" style="color: red;"></p>
     </div>
 
     <script type="module">
         import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-        // Ganti dengan URL & Anon Key dari Supabase
         const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
-        const supabaseKey = "YOUR_ANON_KEY";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        // Fungsi Daftar
-        async function register() {
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("register-email").value;
-            const password = document.getElementById("register-password").value;
-
-            // 1. Daftarkan pengguna ke Supabase Auth
-            const { user, error } = await supabase.auth.signUp({ email, password });
-
-            if (error) {
-                document.getElementById("register-error").innerText = "Pendaftaran gagal: " + error.message;
-                return;
-            }
-
-            // 2. Simpan data ke tabel users
-            const { data, error: insertError } = await supabase.from("users").insert([
-                { id: user.id, email, name }
-            ]);
-
-            if (insertError) {
-                console.error("Gagal menyimpan data user:", insertError);
-                return;
-            }
-
-            alert("Pendaftaran berhasil! Silakan login.");
-            window.location.reload();  // Refresh halaman
-        }
-
-        // Fungsi Login
+        // 🔹 FUNGSI LOGIN
         async function login() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
@@ -105,11 +76,39 @@
             const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
             if (error) {
-                document.getElementById("login-error").innerText = "Login gagal: " + error.message;
+                document.getElementById("error").innerText = "Login gagal! Periksa kembali email dan password.";
             } else {
-                alert("Login berhasil!");
-                window.location.href = "home.html";  // Redirect ke halaman home
+                console.log("Login berhasil:", data);
+                window.location.href = "Home.html"; // Redirect ke halaman utama
             }
+        }
+
+        // 🔹 FUNGSI DAFTAR
+        async function register() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("register-email").value;
+            const password = document.getElementById("register-password").value;
+
+            // 1️⃣ Daftarkan akun di Supabase Auth
+            const { data: authData, error: authError } = await supabase.auth.signUp({ email, password });
+
+            if (authError) {
+                document.getElementById("register-error").innerText = "Pendaftaran gagal: " + authError.message;
+                return;
+            }
+
+            // 2️⃣ Simpan data user ke tabel `users`
+            const { data, error } = await supabase.from("users").insert([
+                { id: authData.user.id, name, email }
+            ]);
+
+            if (error) {
+                document.getElementById("register-error").innerText = "Gagal menyimpan data pengguna: " + error.message;
+                return;
+            }
+
+            alert("Pendaftaran berhasil! Silakan login.");
+            window.location.reload();
         }
     </script>
 
