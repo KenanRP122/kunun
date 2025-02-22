@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Generasi 8</title>
-
+    <title>Login & Daftar - Supabase</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,7 +11,7 @@
             background: linear-gradient(to right, #f96d00, #f9c74f);
             color: white;
         }
-        .login-container {
+        .container {
             width: 300px;
             padding: 20px;
             margin: 100px auto;
@@ -39,73 +38,79 @@
         button:hover {
             background: #ddd;
         }
-        .small-btn {
-        padding: 5px 10px; /* Mengurangi ukuran padding */
-        font-size: 14px; /* Mengecilkan ukuran teks */
-        width: auto; /* Menyesuaikan ukuran dengan teks */
-        height: 30px; /* Menentukan tinggi tombol */
-    }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <h2>Login Generasi 8</h2>
+    <!-- Form Daftar -->
+    <div class="container">
+        <h2>Daftar</h2>
+        <input type="text" id="name" placeholder="Masukkan Nama">
+        <input type="email" id="register-email" placeholder="Masukkan Email">
+        <input type="password" id="register-password" placeholder="Masukkan Password">
+        <button onclick="register()">Daftar</button>
+        <p id="register-error"></p>
+    </div>
+
+    <!-- Form Login -->
+    <div class="container">
+        <h2>Login</h2>
         <input type="email" id="email" placeholder="Masukkan Email">
         <input type="password" id="password" placeholder="Masukkan Password">
         <button onclick="login()">Login</button>
-        <p id="error" style="color: white;"></p>
-    </div>
-    <div>
-       <a href="https://forms.gle/ehoPJqeTPRVv1PpV8">
-    <button class="small-btn">Daftar</button>
-    </div>
-
-    <div>
-        <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/67acad233a842732607dd6be/1ijt88lks';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
+        <p id="login-error"></p>
     </div>
 
     <script type="module">
-       import { createClient } from "https://esm.sh/@supabase/supabase-js";
+        import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
-const supabase = createClient(supabaseUrl, supabaseKey);
+        // Ganti dengan URL & Anon Key dari Supabase
+        const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
+        const supabaseKey = "YOUR_ANON_KEY";
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-async function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+        // Fungsi Daftar
+        async function register() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("register-email").value;
+            const password = document.getElementById("register-password").value;
 
-    console.log("Login attempt with:", email, password); // Cek apakah tombol bekerja
+            // 1. Daftarkan pengguna ke Supabase Auth
+            const { user, error } = await supabase.auth.signUp({ email, password });
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
+            if (error) {
+                document.getElementById("register-error").innerText = "Pendaftaran gagal: " + error.message;
+                return;
+            }
 
-    if (error) {
-        console.error("Error:", error);
-        document.getElementById("error").innerText = "Login gagal! Periksa kembali data Anda.";
-    } else {
-        console.log("Login berhasil:", data);
-        window.location.href = "Home.html"; // Redirect ke halaman Home
-    }
-}
+            // 2. Simpan data ke tabel users
+            const { data, error: insertError } = await supabase.from("users").insert([
+                { id: user.id, email, name }
+            ]);
 
-document.querySelector("button").addEventListener("click", login);
+            if (insertError) {
+                console.error("Gagal menyimpan data user:", insertError);
+                return;
+            }
 
+            alert("Pendaftaran berhasil! Silakan login.");
+            window.location.reload();  // Refresh halaman
+        }
+
+        // Fungsi Login
+        async function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                document.getElementById("login-error").innerText = "Login gagal: " + error.message;
+            } else {
+                alert("Login berhasil!");
+                window.location.href = "home.html";  // Redirect ke halaman home
+            }
+        }
     </script>
 
 </body>
