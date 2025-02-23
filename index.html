@@ -14,7 +14,7 @@
             color: white;
         }
 
-        .login-container {
+        .container {
             background: rgba(255, 255, 255, 0.2);
             padding: 20px;
             width: 300px;
@@ -23,7 +23,7 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .login-container input {
+        .container input {
             width: 90%;
             padding: 10px;
             margin: 10px 0;
@@ -61,29 +61,28 @@
 </head>
 <body>
 
-    <div class="login-container" id="login-form">
+    <div class="container" id="login-form">
         <h2>Login Generasi 8</h2>
         <input type="email" id="login-email" placeholder="Masukkan Email">
         <input type="password" id="login-password" placeholder="Masukkan Password">
-        <button onclick="login()">Login</button>
+        <button id="login-btn">Login</button>
         <p id="login-error"></p>
         <p class="switch-form" onclick="showRegister()">Belum punya akun? Daftar</p>
     </div>
 
-    <div class="login-container" id="register-form" style="display: none;">
+    <div class="container" id="register-form" style="display: none;">
         <h2>Daftar Akun</h2>
         <input type="email" id="register-email" placeholder="Masukkan Email">
         <input type="password" id="register-password" placeholder="Buat Password">
-        <button onclick="register()">Daftar</button>
+        <button id="register-btn">Daftar</button>
         <p id="register-error"></p>
         <p class="switch-form" onclick="showLogin()">Sudah punya akun? Login</p>
     </div>
 
     <script>
-        const { createClient } = supabase;
         const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
         const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         function showRegister() {
             document.getElementById("login-form").style.display = "none";
@@ -95,11 +94,11 @@
             document.getElementById("login-form").style.display = "block";
         }
 
-        async function login() {
+        document.getElementById("login-btn").addEventListener("click", async () => {
             const email = document.getElementById("login-email").value;
             const password = document.getElementById("login-password").value;
 
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { error } = await supabase.auth.signInWithPassword({
                 email,
                 password
             });
@@ -110,13 +109,13 @@
                 alert("Login berhasil!");
                 window.location.href = "Home.html"; // Pindah ke Home.html
             }
-        }
+        });
 
-        async function register() {
+        document.getElementById("register-btn").addEventListener("click", async () => {
             const email = document.getElementById("register-email").value;
             const password = document.getElementById("register-password").value;
 
-            const { data, error } = await supabase.auth.signUp({
+            const { error } = await supabase.auth.signUp({
                 email,
                 password
             });
@@ -127,7 +126,7 @@
                 alert("Akun berhasil dibuat! Silakan login.");
                 showLogin();
             }
-        }
+        });
     </script>
 
 </body>
