@@ -3,130 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Generasi 8</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <title>Login - Generasi 8</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(to right, #f96d00, #f9c74f);
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            color: white;
         }
-
         .container {
-            background: rgba(255, 255, 255, 0.2);
+            background: white;
             padding: 20px;
-            width: 300px;
-            margin: 100px auto;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 300px;
+            text-align: center;
         }
-
-        .container input {
-            width: 90%;
+        input {
+            width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: none;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
         }
-
         button {
-            background: white;
-            color: #f96d00;
-            padding: 10px 20px;
-            border: none;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            border-radius: 5px;
-        }
-
-        button:hover {
             background: #f96d00;
             color: white;
-        }
-
-        .switch-form {
-            margin-top: 10px;
-            font-size: 14px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            color: white;
-            text-decoration: underline;
+            width: 100%;
         }
-
+        button:hover {
+            background: #d45500;
+        }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-
-    <div class="container" id="login-form">
-        <h2>Login Generasi 8</h2>
-        <input type="email" id="login-email" placeholder="Masukkan Email">
-        <input type="password" id="login-password" placeholder="Masukkan Password">
-        <button id="login-btn">Login</button>
-        <p id="login-error" style="color: red;"></p>
-        <p class="switch-form" onclick="showRegister()">Belum punya akun? Daftar</p>
+    <div class="container" id="auth-container">
+        <h2>Login / Daftar</h2>
+        <input type="email" id="email" placeholder="Masukkan Email" required>
+        <input type="password" id="password" placeholder="Masukkan Password" required>
+        <button onclick="register()">Daftar</button>
+        <button onclick="login()">Login</button>
     </div>
 
-    <div class="container" id="register-form" style="display: none;">
-        <h2>Daftar Akun</h2>
-        <input type="email" id="register-email" placeholder="Masukkan Email">
-        <input type="password" id="register-password" placeholder="Buat Password">
-        <button id="register-btn">Daftar</button>
-        <p id="register-error" style="color: red;"></p>
-        <p class="switch-form" onclick="showLogin()">Sudah punya akun? Login</p>
+    <div class="container hidden" id="home-container">
+        <h2>Selamat Datang di Generasi 8</h2>
+        <p>Anda telah login!</p>
+        <button onclick="logout()">Logout</button>
     </div>
 
     <script>
-        // Inisialisasi Supabase
         const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
         const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Fungsi untuk login
-        async function login() {
-            const email = document.getElementById("login-email").value;
-            const password = document.getElementById("login-password").value;
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-            if (error) {
-                document.getElementById("login-error").innerText = "Gagal login. Periksa email/password.";
-            } else {
-                window.location.href = "Home.html"; // Pindah ke halaman home
-            }
-        }
-
-        // Fungsi untuk daftar
         async function register() {
-            const email = document.getElementById("register-email").value;
-            const password = document.getElementById("register-password").value;
-            const { data, error } = await supabase.auth.signUp({ email, password });
-
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const { user, error } = await supabase.auth.signUp({ email, password });
             if (error) {
-                document.getElementById("register-error").innerText = "Gagal daftar. Coba email lain.";
+                alert("Gagal daftar: " + error.message);
             } else {
-                alert("Pendaftaran berhasil! Silakan login.");
-                showLogin();
+                alert("Berhasil daftar, silakan login!");
             }
         }
 
-        // Menampilkan form login
-        function showLogin() {
-            document.getElementById("login-form").style.display = "block";
-            document.getElementById("register-form").style.display = "none";
+        async function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+                alert("Gagal login: " + error.message);
+            } else {
+                document.getElementById("auth-container").classList.add("hidden");
+                document.getElementById("home-container").classList.remove("hidden");
+            }
         }
 
-        // Menampilkan form register
-        function showRegister() {
-            document.getElementById("login-form").style.display = "none";
-            document.getElementById("register-form").style.display = "block";
+        function logout() {
+            document.getElementById("auth-container").classList.remove("hidden");
+            document.getElementById("home-container").classList.add("hidden");
         }
-
-        document.getElementById("login-btn").addEventListener("click", login);
-        document.getElementById("register-btn").addEventListener("click", register);
     </script>
-
 </body>
 </html>
