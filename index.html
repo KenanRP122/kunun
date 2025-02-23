@@ -66,7 +66,7 @@
         <input type="email" id="login-email" placeholder="Masukkan Email">
         <input type="password" id="login-password" placeholder="Masukkan Password">
         <button id="login-btn">Login</button>
-        <p id="login-error"></p>
+        <p id="login-error" style="color: red;"></p>
         <p class="switch-form" onclick="showRegister()">Belum punya akun? Daftar</p>
     </div>
 
@@ -75,58 +75,57 @@
         <input type="email" id="register-email" placeholder="Masukkan Email">
         <input type="password" id="register-password" placeholder="Buat Password">
         <button id="register-btn">Daftar</button>
-        <p id="register-error"></p>
+        <p id="register-error" style="color: red;"></p>
         <p class="switch-form" onclick="showLogin()">Sudah punya akun? Login</p>
     </div>
 
     <script>
+        // Inisialisasi Supabase
         const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
         const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
+        // Fungsi untuk login
+        async function login() {
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                document.getElementById("login-error").innerText = "Gagal login. Periksa email/password.";
+            } else {
+                window.location.href = "Home.html"; // Pindah ke halaman home
+            }
+        }
+
+        // Fungsi untuk daftar
+        async function register() {
+            const email = document.getElementById("register-email").value;
+            const password = document.getElementById("register-password").value;
+            const { data, error } = await supabase.auth.signUp({ email, password });
+
+            if (error) {
+                document.getElementById("register-error").innerText = "Gagal daftar. Coba email lain.";
+            } else {
+                alert("Pendaftaran berhasil! Silakan login.");
+                showLogin();
+            }
+        }
+
+        // Menampilkan form login
+        function showLogin() {
+            document.getElementById("login-form").style.display = "block";
+            document.getElementById("register-form").style.display = "none";
+        }
+
+        // Menampilkan form register
         function showRegister() {
             document.getElementById("login-form").style.display = "none";
             document.getElementById("register-form").style.display = "block";
         }
 
-        function showLogin() {
-            document.getElementById("register-form").style.display = "none";
-            document.getElementById("login-form").style.display = "block";
-        }
-
-        document.getElementById("login-btn").addEventListener("click", async () => {
-            const email = document.getElementById("login-email").value;
-            const password = document.getElementById("login-password").value;
-
-            const { error } = await supabase.auth.signInWithPassword({
-                email,
-                password
-            });
-
-            if (error) {
-                document.getElementById("login-error").innerText = "Login gagal! Periksa email & password.";
-            } else {
-                alert("Login berhasil!");
-                window.location.href = "Home.html"; // Pindah ke Home.html
-            }
-        });
-
-        document.getElementById("register-btn").addEventListener("click", async () => {
-            const email = document.getElementById("register-email").value;
-            const password = document.getElementById("register-password").value;
-
-            const { error } = await supabase.auth.signUp({
-                email,
-                password
-            });
-
-            if (error) {
-                document.getElementById("register-error").innerText = "Pendaftaran gagal! Coba lagi.";
-            } else {
-                alert("Akun berhasil dibuat! Silakan login.");
-                showLogin();
-            }
-        });
+        document.getElementById("login-btn").addEventListener("click", login);
+        document.getElementById("register-btn").addEventListener("click", register);
     </script>
 
 </body>
