@@ -42,11 +42,10 @@
         button:hover {
             background: #d45500;
         }
-        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <div class="container" id="auth-container">
+    <div class="container">
         <h2>Login / Daftar</h2>
         <input type="email" id="email" placeholder="Masukkan Email" required>
         <input type="password" id="password" placeholder="Masukkan Password" required>
@@ -54,15 +53,9 @@
         <button onclick="login()">Login</button>
     </div>
 
-    <div class="container hidden" id="home-container">
-        <h2>Selamat Datang di Generasi 8</h2>
-        <p>Anda telah login!</p>
-        <button onclick="logout()">Logout</button>
-    </div>
-
     <script>
         const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // Pastikan mengganti dengan kunci yang aman
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         async function register() {
@@ -72,7 +65,7 @@
             if (error) {
                 alert("Gagal daftar: " + error.message);
             } else {
-                alert("Berhasil daftar, langsung login...");
+                alert("Berhasil daftar, masuk ke website...");
                 login();
             }
         }
@@ -84,15 +77,8 @@
             if (error) {
                 alert("Gagal login: " + error.message);
             } else {
-                document.getElementById("auth-container").classList.add("hidden");
-                document.getElementById("home-container").classList.remove("hidden");
+                window.location.href = "index.html";
             }
-        }
-
-        async function logout() {
-            await supabase.auth.signOut();
-            document.getElementById("auth-container").classList.remove("hidden");
-            document.getElementById("home-container").classList.add("hidden");
         }
     </script>
 </body>
