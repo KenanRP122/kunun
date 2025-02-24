@@ -67,31 +67,45 @@
             margin-top: 30px;
         }
 
-        .container img {
-            width: 150px;
-            height: auto;
-        }
-
         .container h2 {
             font-size: 28px;
             margin-top: 10px;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .pertanyaan {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            margin-top: 30px;
-        }
-
         .videoSI {
             margin-top: 30px;
         }
 
+        .blur-section {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            color: white;
+        }
+
+        .blur-section img {
+            width: 100px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .blur-section h3 {
+            margin: 0;
+        }
+
         @media (max-width: 768px) {
             .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .blur-section {
                 flex-direction: column;
                 text-align: center;
             }
@@ -119,25 +133,25 @@
         <iframe width="560" height="315" src="https://www.youtube.com/embed/-plMLDUNNus?si=EBDJCvQ6O0JMRXh7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
 
-    <div class="pertanyaan">
-        <h2>Untuk Generasi 8, Dibuat Oleh Kenan</h2>
-        <h3>(Mohon Maaf Segala Kesalahan Yang Di Buat Oleh Website Saya, Karena Website Ini Masih tahap Pengembangan)</h3>
+    <div class="blur-section">
+        <img src="Gambar/UstadzPurwanto.png" alt="Ustadz Purwanto">
+        <h3>Ustadz Purwanto - Pimpinan Pondok</h3>
     </div>
 
     <div>
         <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/67acad233a842732607dd6be/1ijt88lks';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
+        <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/67acad233a842732607dd6be/1ijt88lks';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+        </script>
+        <!--End of Tawk.to Script-->
     </div>
 </body>
 </html>
