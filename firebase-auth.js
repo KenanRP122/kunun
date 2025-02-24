@@ -1,8 +1,8 @@
 // Import Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// Konfigurasi Firebase dari proyek kamu
+// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDR4g7ZiTagykRbHVB8kMBSSjrj9AJvLAI",
   authDomain: "kunun-6135a.firebaseapp.com",
@@ -17,30 +17,39 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Fungsi Daftar
-window.register = async function() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+// Fungsi Login
+window.login = async function() {
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
 
     try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        alert("Berhasil daftar, silakan login!");
-        window.location.href = "Home.html"; // Redirect ke halaman Home
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        if (!user.emailVerified) {
+            alert("Email belum diverifikasi. Silakan cek email Anda untuk verifikasi.");
+        } else {
+            alert("Login berhasil!");
+            window.location.href = "Home.html"; // Redirect ke halaman Home
+        }
     } catch (error) {
-        alert("Gagal daftar: " + error.message);
+        alert("Gagal login: " + error.message);
     }
 };
 
-// Fungsi Login
-window.login = async function() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+// Fungsi Daftar
+window.register = async function() {
+    const email = document.getElementById("register-email").value;
+    const password = document.getElementById("register-password").value;
 
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        alert("Login berhasil!");
-        window.location.href = "Home.html"; // Redirect ke halaman Home
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        await sendEmailVerification(user);
+        alert("Berhasil daftar! Cek email Anda untuk verifikasi sebelum login.");
+        window.location.href = "login.html"; // Redirect ke halaman login
     } catch (error) {
-        alert("Gagal login: " + error.message);
+        alert("Gagal daftar: " + error.message);
     }
 };
