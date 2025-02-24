@@ -56,7 +56,7 @@ window.register = async function() {
                 <h3>🎉 Pendaftaran Berhasil!</h3>
                 <p>Silakan cek email Anda untuk verifikasi sebelum login.</p>
                 <p class="info">Email verifikasi telah dikirim ke <b>${email}</b>.</p>
-                <button onclick="showLogin()">Login Sekarang</button>
+                <button onclick="toggleForm('login')">Login Sekarang</button>
             </div>
         `;
         messageBox.style.display = "block";
