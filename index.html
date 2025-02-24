@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Generasi 8</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="auth.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,34 +52,5 @@
         <button onclick="register()">Daftar</button>
         <button onclick="login()">Login</button>
     </div>
-
-    <script>
-        const supabaseUrl = "https://iasygmfiitbhmtxetscy.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlhc3lnbWZpaXRiaG10eGV0c2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0MTc2NDIsImV4cCI6MjA1NDk5MzY0Mn0.5P7Xnb42nuK-5uM6b-uPhY25pwdbkNxDAT9DnBQjrQo";
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-        async function register() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            const { data, error } = await supabase.auth.signUp({ email, password });
-            if (error) {
-                alert("Gagal daftar: " + error.message);
-            } else {
-                alert("Berhasil daftar, masuk ke website...");
-                login();
-            }
-        }
-
-        async function login() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) {
-                alert("Gagal login: " + error.message);
-            } else {
-                window.location.href = "index.html";
-            }
-        }
-    </script>
 </body>
 </html>
