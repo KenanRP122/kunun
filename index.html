@@ -20,8 +20,12 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            width: 300px;
+            width: 320px;
             text-align: center;
+            display: none;
+        }
+        .container.active {
+            display: block;
         }
         input {
             width: 100%;
@@ -45,15 +49,64 @@
         .link {
             margin-top: 10px;
         }
+        .link a {
+            color: #f96d00;
+            text-decoration: none;
+        }
+        .link a:hover {
+            text-decoration: underline;
+        }
+        .success-box {
+            background: #e3fcef;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .success-box h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .success-box .info {
+            font-size: 14px;
+            color: #388e3c;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container active" id="login-container">
         <h2>Login</h2>
         <input type="email" id="login-email" placeholder="Masukkan Email" required>
         <input type="password" id="login-password" placeholder="Masukkan Password" required>
         <button onclick="login()">Login</button>
-        <p class="link">Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+        
+        <p class="link">Belum punya akun? <a href="#" onclick="toggleForm('register')">Daftar di sini</a></p>
     </div>
+
+    <div class="container" id="register-container">
+        <h2>Daftar</h2>
+        <input type="email" id="register-email" placeholder="Masukkan Email" required>
+        <input type="password" id="register-password" placeholder="Masukkan Password" required>
+        <button onclick="register()">Daftar</button>
+        
+        <p class="link">Sudah punya akun? <a href="#" onclick="toggleForm('login')">Login di sini</a></p>
+        
+        <div id="message-box" style="display: none;"></div>
+    </div>
+
+    <script>
+        function toggleForm(form) {
+            document.getElementById("login-container").classList.remove("active");
+            document.getElementById("register-container").classList.remove("active");
+
+            if (form === 'register') {
+                document.getElementById("register-container").classList.add("active");
+            } else {
+                document.getElementById("login-container").classList.add("active");
+            }
+        }
+    </script>
 </body>
 </html>
