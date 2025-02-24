@@ -48,7 +48,7 @@ window.register = async function() {
 
         await sendEmailVerification(user);
         alert("Berhasil daftar! Cek email Anda untuk verifikasi sebelum login.");
-        window.location.href = "login.html"; // Redirect ke halaman login
+        window.location.href = "Home.html"; // Redirect ke halaman login
     } catch (error) {
         alert("Gagal daftar: " + error.message);
     }
