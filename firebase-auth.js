@@ -4,7 +4,7 @@ import {
     sendEmailVerification, 
     signInWithEmailAndPassword 
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // 📌 **Registrasi Pengguna + OTP**
 document.getElementById("register-btn").addEventListener("click", async () => {
@@ -46,8 +46,8 @@ document.getElementById("login-btn").addEventListener("click", async () => {
         const user = userCredential.user;
 
         if (user.emailVerified) {
-            alert("Login berhasil!");
-            window.location.href = "Anggota.html"; // Redirect ke halaman anggota
+            alert("Login berhasil! Anda akan diarahkan ke halaman utama.");
+            window.location.href = "Home.html"; // Redirect ke halaman utama
         } else {
             alert("Harap verifikasi email terlebih dahulu.");
         }
