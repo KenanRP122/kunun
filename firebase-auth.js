@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-// Konfigurasi Firebase
+// 🔹 Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDR4g7ZiTagykRbHVB8kMBSSjrj9AJvLAI",
   authDomain: "kunun-6135a.firebaseapp.com",
@@ -13,53 +13,75 @@ const firebaseConfig = {
   measurementId: "G-7ERLY66H9K"
 };
 
-// Inisialisasi Firebase
+// 🔹 Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Fungsi Register
-document.getElementById("register-btn").addEventListener("click", async () => {
-    const username = document.getElementById("register-username").value;
-    const phone = document.getElementById("register-phone").value;
-    const email = document.getElementById("register-email").value;
-    const password = document.getElementById("register-password").value;
+// === 🔹 REGISTER USER ===
+document.getElementById("register-btn").addEventListener("click", async function () {
+    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const phone = document.getElementById("phone").value.trim();
+
+    if (!username || !email || !password || !phone) {
+        alert("Semua data harus diisi!");
+        return;
+    }
 
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Kirim Email Verifikasi OTP
-        await sendEmailVerification(user);
-
-        // Simpan Data ke Firestore
-        await setDoc(doc(db, "users", user.uid), {
+        // 🔹 Simpan ke Firestore
+        await addDoc(collection(db, "anggota"), {
+            uid: user.uid,
             username: username,
             email: email,
             phone: phone
         });
 
-        alert("Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.");
+        // 🔹 Kirim Email Verifikasi
+        await sendEmailVerification(user);
+        alert("Kode OTP telah dikirim ke email. Silakan verifikasi sebelum login.");
+        window.location.href = "index.html"; // Kembali ke halaman login
     } catch (error) {
-        alert(error.message);
+        alert("Gagal mendaftar: " + error.message);
     }
 });
 
-// Fungsi Login
-document.getElementById("login-btn").addEventListener("click", async () => {
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
+// === 🔹 LOGIN USER ===
+document.getElementById("login-btn").addEventListener("click", function () {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
 
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+    if (!email || !password) {
+        alert("Email dan password harus diisi!");
+        return;
+    }
 
-        if (user.emailVerified) {
-            window.location.href = "Home.html"; // Redirect ke Home setelah login
-        } else {
-            alert("Silakan verifikasi email Anda terlebih dahulu.");
-        }
-    } catch (error) {
-        alert(error.message);
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+
+            if (user.emailVerified) {
+                alert("Login berhasil!");
+                window.location.href = "home.html"; // Redirect ke halaman utama
+            } else {
+                alert("Silakan verifikasi email Anda terlebih dahulu.");
+            }
+        })
+        .catch((error) => {
+            alert("Login gagal: " + error.message);
+        });
+});
+
+// === 🔹 CEK STATUS LOGIN ===
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log("User logged in:", user.email);
+    } else {
+        console.log("User not logged in.");
     }
 });
