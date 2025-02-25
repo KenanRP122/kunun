@@ -1,54 +1,59 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { firebaseConfig } from "./firebase-config.js";
 
-// 🔥 Konfigurasi Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyDR4g7ZiTagykRbHVB8kMBSSjrj9AJvLAI",
-    authDomain: "kunun-6135a.firebaseapp.com",
-    projectId: "kunun-6135a",
-    storageBucket: "kunun-6135a.appspot.com",
-    messagingSenderId: "1001222263976",
-    appId: "1:1001222263976:web:88c6f6c4b054ab37aade9d",
-    measurementId: "G-7ERLY66H9K"
-};
-
-// 🔥 Inisialisasi Firebase
+// Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// 📌 **Daftar User Baru & Simpan ke Firestore**
-document.getElementById("register-btn").addEventListener("click", async function () {
-    const username = document.getElementById("reg-username").value;
-    const email = document.getElementById("reg-email").value;
-    const phone = document.getElementById("reg-phone").value;
-    const password = document.getElementById("reg-password").value;
-
-    if (!username || !email || !phone || !password) {
-        alert("Semua kolom harus diisi!");
-        return;
-    }
+// === DAFTAR ===
+document.getElementById("register-btn").addEventListener("click", async () => {
+    const username = document.getElementById("register-username").value;
+    const email = document.getElementById("register-email").value;
+    const phone = document.getElementById("register-phone").value;
+    const password = document.getElementById("register-password").value;
 
     try {
-        // **Buat akun di Firebase Authentication**
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // **Kirim email verifikasi**
-        await sendEmailVerification(user);
-        alert("Verifikasi email telah dikirim!");
-
-        // **Simpan data pengguna ke Firestore (Koleksi: anggota)**
-        await setDoc(doc(db, "anggota", user.uid), {
+        // Simpan data ke Firestore
+        await setDoc(doc(db, "users", user.uid), {
             username: username,
             email: email,
             phone: phone
         });
 
-        // Arahkan ke halaman login
+        // Kirim email verifikasi
+        await sendEmailVerification(user);
+        alert("Pendaftaran berhasil! Periksa email untuk verifikasi.");
+
+        // Redirect ke login
         window.location.href = "index.html";
     } catch (error) {
-        alert("Error: " + error.message);
+        alert("Gagal daftar: " + error.message);
+    }
+});
+
+// === LOGIN ===
+document.getElementById("login-btn").addEventListener("click", async () => {
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        if (!user.emailVerified) {
+            alert("Verifikasi email dulu sebelum login!");
+            return;
+        }
+
+        alert("Login berhasil!");
+        window.location.href = "Home.html";
+    } catch (error) {
+        alert("Login gagal: " + error.message);
     }
 });
