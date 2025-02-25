@@ -3,39 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Anggota - Generasi 8</title>
+    <title>Login & Daftar - Generasi 8</title>
+    <script type="module" src="firebase-auth.js"></script>
     <style>
         body {
-            background: linear-gradient(to right, #f96d00, #f9c74f);
             font-family: Arial, sans-serif;
             text-align: center;
-            color: white;
         }
         .container {
-            margin-top: 30px;
-        }
-        .anggota-list {
-            list-style: none;
-            padding: 0;
-        }
-        .anggota-list li {
-            background: white;
-            color: black;
-            margin: 10px auto;
-            padding: 15px;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
             border-radius: 10px;
-            width: 60%;
-            font-size: 18px;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
-
 <body>
 
-    <h2>Daftar Anggota</h2>
-    <ul id="anggota-list" class="anggota-list"></ul>
+    <div class="container">
+        <!-- Form Login -->
+        <div id="login-form">
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Email"><br><br>
+            <input type="password" id="login-password" placeholder="Password"><br><br>
+            <button id="login-btn">Login</button>
+            <p>Belum punya akun? <a href="#" id="show-register">Daftar di sini</a></p>
+        </div>
 
-    <script type="module" src="firebase-anggota.js"></script>
+        <!-- Form Daftar -->
+        <div id="register-form" class="hidden">
+            <h2>Daftar</h2>
+            <input type="text" id="register-username" placeholder="Username"><br><br>
+            <input type="email" id="register-email" placeholder="Email"><br><br>
+            <input type="text" id="register-phone" placeholder="No Telepon"><br><br>
+            <input type="password" id="register-password" placeholder="Password"><br><br>
+            <button id="register-btn">Daftar</button>
+            <p>Sudah punya akun? <a href="#" id="show-login">Login di sini</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("show-register").addEventListener("click", function() {
+            document.getElementById("login-form").classList.add("hidden");
+            document.getElementById("register-form").classList.remove("hidden");
+        });
+
+        document.getElementById("show-login").addEventListener("click", function() {
+            document.getElementById("register-form").classList.add("hidden");
+            document.getElementById("login-form").classList.remove("hidden");
+        });
+    </script>
 
 </body>
 </html>
