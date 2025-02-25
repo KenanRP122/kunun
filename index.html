@@ -3,62 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Daftar - Generasi 8</title>
+    <title>Login - Generasi 8</title>
+    <script type="module" src="firebase-auth.js"></script>
     <style>
         body {
+            font-family: Arial, sans-serif;
             background: linear-gradient(to right, #f96d00, #f9c74f);
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-
         .container {
-            margin-top: 50px;
-        }
-
-        .form-box {
             background: white;
-            color: black;
             padding: 20px;
             border-radius: 10px;
-            width: 300px;
-            margin: auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 320px;
+            text-align: center;
+            display: none;
         }
-
+        .container.active {
+            display: block;
+        }
         input {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 5px;
         }
-
         button {
             background: #f96d00;
             color: white;
             padding: 10px;
             border: none;
             border-radius: 5px;
-            width: 100%;
             cursor: pointer;
+            width: 100%;
         }
-
-        .hidden { display: none; }
+        button:hover {
+            background: #d45500;
+        }
+        .link {
+            margin-top: 10px;
+        }
+        .link a {
+            color: #f96d00;
+            text-decoration: none;
+        }
+        .link a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 id="form-title">Login</h2>
-        <div class="form-box">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button id="auth-btn">Login</button>
-            <p id="toggle-form">Belum punya akun? <a href="#">Daftar di sini</a></p>
-            <p class="hidden" id="verify-message">Cek email untuk verifikasi!</p>
-        </div>
+    <div class="container active" id="login-container">
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Masukkan Email" required>
+        <input type="password" id="login-password" placeholder="Masukkan Password" required>
+        <button onclick="login()">Login</button>
+        <p class="link">Belum punya akun? <a href="#" onclick="toggleForm('register')">Daftar di sini</a></p>
     </div>
 
-    <script type="module" src="firebase-auth.js"></script>
+    <div class="container" id="register-container">
+        <h2>Daftar</h2>
+        <input type="email" id="register-email" placeholder="Masukkan Email" required>
+        <input type="password" id="register-password" placeholder="Masukkan Password" required>
+        <button onclick="register()">Daftar</button>
+        <p class="link">Sudah punya akun? <a href="#" onclick="toggleForm('login')">Login di sini</a></p>
+    </div>
+
+    <script>
+        function toggleForm(form) {
+            document.getElementById("login-container").classList.remove("active");
+            document.getElementById("register-container").classList.remove("active");
+
+            if (form === 'register') {
+                document.getElementById("register-container").classList.add("active");
+            } else {
+                document.getElementById("login-container").classList.add("active");
+            }
+        }
+    </script>
 </body>
 </html>
