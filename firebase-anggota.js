@@ -1,26 +1,32 @@
-import { db } from "./firebase-config.js";
-import { getDocs, collection } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+// Konfigurasi Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyDR4g7ZiTagykRbHVB8kMBSSjrj9AJvLAI",
+  authDomain: "kunun-6135a.firebaseapp.com",
+  projectId: "kunun-6135a",
+  storageBucket: "kunun-6135a.appspot.com",
+  messagingSenderId: "1001222263976",
+  appId: "1:1001222263976:web:88c6f6c4b054ab37aade9d",
+  measurementId: "G-7ERLY66H9K"
+};
+
+// Inisialisasi Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Ambil Data Anggota
 async function loadAnggota() {
-    const anggotaContainer = document.getElementById("anggota-container");
-    anggotaContainer.innerHTML = "<h3>Memuat anggota...</h3>";
+    const anggotaList = document.getElementById("anggota-list");
+    const querySnapshot = await getDocs(collection(db, "users"));
 
-    try {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        let anggotaHTML = "<ul>";
-
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            anggotaHTML += `<li><b>${data.username}</b> - ${data.email} (${data.phone})</li>`;
-        });
-
-        anggotaHTML += "</ul>";
-        anggotaContainer.innerHTML = anggotaHTML;
-    } catch (error) {
-        console.error("Gagal mengambil data anggota:", error);
-        anggotaContainer.innerHTML = "<p>Gagal memuat data anggota.</p>";
-    }
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const li = document.createElement("li");
+        li.textContent = `${data.username} - ${data.email} - ${data.phone}`;
+        anggotaList.appendChild(li);
+    });
 }
 
-// Panggil fungsi saat halaman dimuat
-window.onload = loadAnggota;
+loadAnggota();
