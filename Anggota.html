@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generasi 8</title>
+    <title>Daftar Anggota - Generasi 8</title>
     <style>
         body {
             background: linear-gradient(to right, #f96d00, #f9c74f);
@@ -19,7 +19,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.3); 
+            background: rgba(0, 0, 0, 0.3);
             border-bottom: 3px solid white;
         }
 
@@ -59,42 +59,27 @@
             color: #f96d00;
         }
 
+        .hidden { display: none; }
+
         .container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
             margin-top: 30px;
         }
 
-        .container img {
-            width: 150px;
-            height: auto;
+        .anggota-list {
+            list-style: none;
+            padding: 0;
         }
 
-        .container h2 {
-            font-size: 28px;
-            margin-top: 10px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .pertanyaan {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            margin-top: 30px;
-        }
-
-        .videoSI {
-            margin-top: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                text-align: center;
-            }
+        .anggota-list li {
+            background: white;
+            color: black;
+            margin: 10px auto;
+            padding: 15px;
+            border-radius: 10px;
+            width: 60%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 18px;
+            text-align: left;
         }
     </style>
 </head>
@@ -110,28 +95,28 @@
         <a href="Home.html">Home</a>
         <a href="Anggota.html">Anggota</a>
         <a href="Chat.html">Obrolan</a>
-         <a href="https://form.typeform.com/to/z3gGhBOx" target="_blank">Form Lengkapi Diri</a>
+        <a href="#" id="logout-btn" class="hidden">Logout</a>
     </div>
 
     <div class="container">
-        <h2>Sekolah Impian</h2>
-    </div>
-    <div>
-        <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/67acad233a842732607dd6be/1ijt88lks';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
+        <h2>Daftar Anggota</h2>
+        <ul id="anggota-list" class="anggota-list"></ul>
     </div>
 
+    <!-- Tawk.to Chat -->
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/67acad233a842732607dd6be/1ijt88lks';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+
 <script type="module" src="firebase-anggota.js"></script>
+
 </body>
 </html>
