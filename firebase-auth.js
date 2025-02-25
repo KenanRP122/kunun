@@ -73,7 +73,7 @@ document.getElementById("login-btn").addEventListener("click", async function ()
         }
 
         alert("Login berhasil!");
-        window.location.href = "home.html";
+        window.location.href = "Home.html";
     } catch (error) {
         alert("Login gagal: " + error.message);
     }
