@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // 🔥 Konfigurasi Firebase
 const firebaseConfig = {
@@ -15,44 +14,21 @@ const firebaseConfig = {
 
 // 🔥 Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
 
+// **Ambil Data Anggota dari Firestore**
 async function loadAnggota() {
-    const q = query(collection(db, "anggota"), where("verified", "==", true));
-    const querySnapshot = await getDocs(q);
     const anggotaList = document.getElementById("anggota-list");
+    anggotaList.innerHTML = ""; // Kosongkan daftar
 
-    anggotaList.innerHTML = "";
+    const querySnapshot = await getDocs(collection(db, "anggota"));
     querySnapshot.forEach((doc) => {
         const data = doc.data();
-        anggotaList.innerHTML += `
-            <li>
-                <strong>Username:</strong> ${data.username} <br>
-                <strong>Email:</strong> ${data.email} <br>
-                <strong>No Telepon:</strong> ${data.phone}
-            </li>
-        `;
+        const li = document.createElement("li");
+        li.textContent = `${data.username} - ${data.email} - ${data.phone}`;
+        anggotaList.appendChild(li);
     });
 }
 
-// 📌 **Logout User**
-document.getElementById("logout-btn").addEventListener("click", async function () {
-    try {
-        await signOut(auth);
-        alert("Logout berhasil!");
-        window.location.href = "index.html";
-    } catch (error) {
-        console.error("Logout gagal:", error);
-    }
-});
-
-// 📌 **Cek Status Login**
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        document.getElementById("logout-btn").classList.remove("hidden");
-        loadAnggota(); // Load anggota setelah login
-    } else {
-        document.getElementById("logout-btn").classList.add("hidden");
-    }
-});
+// **Panggil fungsi saat halaman dimuat**
+window.onload = loadAnggota;
