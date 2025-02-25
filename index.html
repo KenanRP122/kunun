@@ -3,65 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Generasi 8</title>
-    <script type="module" src="firebase-auth.js"></script>
+    <title>Daftar Anggota - Generasi 8</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             background: linear-gradient(to right, #f96d00, #f9c74f);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
         }
         .container {
+            margin-top: 30px;
+        }
+        .anggota-list {
+            list-style: none;
+            padding: 0;
+        }
+        .anggota-list li {
             background: white;
-            padding: 20px;
+            color: black;
+            margin: 10px auto;
+            padding: 15px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            width: 320px;
-            text-align: center;
+            width: 60%;
+            font-size: 18px;
         }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background: #f96d00;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-        button:hover {
-            background: #d45500;
-        }
-        .hidden { display: none; }
     </style>
 </head>
-<body>
-    <div class="container" id="login-container">
-        <h2>Login</h2>
-        <input type="email" id="login-email" placeholder="Masukkan Email" required>
-        <input type="password" id="login-password" placeholder="Masukkan Password" required>
-        <button id="login-btn">Login</button>
-        <p>Belum punya akun? <a href="#" id="show-register">Daftar di sini</a></p>
-    </div>
 
-    <div class="container hidden" id="register-container">
-        <h2>Daftar</h2>
-        <input type="text" id="register-username" placeholder="Masukkan Username" required>
-        <input type="tel" id="register-phone" placeholder="Masukkan No. Telepon" required>
-        <input type="email" id="register-email" placeholder="Masukkan Email" required>
-        <input type="password" id="register-password" placeholder="Masukkan Password" required>
-        <button id="register-btn">Daftar</button>
-        <p>Sudah punya akun? <a href="#" id="show-login">Login di sini</a></p>
-    </div>
+<body>
+
+    <h2>Daftar Anggota</h2>
+    <ul id="anggota-list" class="anggota-list"></ul>
+
+    <script type="module" src="firebase-anggota.js"></script>
+
 </body>
 </html>
