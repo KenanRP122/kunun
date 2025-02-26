@@ -4,7 +4,8 @@ import {
     getAuth, 
     signInWithEmailAndPassword, 
     createUserWithEmailAndPassword, 
-    sendEmailVerification 
+    sendEmailVerification, 
+    signOut 
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // Konfigurasi Firebase
@@ -31,18 +32,24 @@ window.login = async function() {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         
-        // Refresh data pengguna untuk mendapatkan status terbaru dari server
+        // Refresh status email verifikasi sebelum pengecekan
         await user.reload();
         
-        if (user.emailVerified) {
-            alert("Login berhasil! Anda akan diarahkan ke halaman utama.");
-            window.location.href = "Home.html"; // Redirect ke halaman utama
-        } else {
+        if (!user.emailVerified) {
             alert("Email Anda belum diverifikasi! Silakan cek email Anda dan verifikasi terlebih dahulu.");
-            await sendEmailVerification(user); // Kirim ulang email verifikasi
+            
+            // Kirim ulang email verifikasi
+            await sendEmailVerification(user);
             alert("Email verifikasi telah dikirim ulang. Silakan periksa kotak masuk Anda.");
-            await auth.signOut(); // Logout otomatis agar tidak masuk ke halaman utama
+
+            // Logout otomatis agar tidak masuk ke halaman utama
+            await signOut(auth);
+            return;
         }
+        
+        alert("Login berhasil! Anda akan diarahkan ke halaman utama.");
+        window.location.href = "Home.html"; // Redirect ke halaman utama
+
     } catch (error) {
         alert("Gagal login: " + error.message);
     }
@@ -58,7 +65,6 @@ window.register = async function() {
         const user = userCredential.user;
 
         await sendEmailVerification(user);
-
         alert("Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi sebelum login.");
         
         // Pindah otomatis ke halaman login
