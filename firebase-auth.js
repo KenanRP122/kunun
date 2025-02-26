@@ -1,17 +1,21 @@
 // Import Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } 
-from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { 
+    getAuth, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword, 
+    sendEmailVerification 
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // Konfigurasi Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyDR4g7ZiTagykRbHVB8kMBSSjrj9AJvLAI",
-  authDomain: "kunun-6135a.firebaseapp.com",
-  projectId: "kunun-6135a",
-  storageBucket: "kunun-6135a.appspot.com",
-  messagingSenderId: "1001222263976",
-  appId: "1:1001222263976:web:88c6f6c4b054ab37aade9d",
-  measurementId: "G-7ERLY66H9K"
+    apiKey: "AIzaSyDR4g7ZiTagykRbHVB8kMBSSjrj9AJvLAI",
+    authDomain: "kunun-6135a.firebaseapp.com",
+    projectId: "kunun-6135a",
+    storageBucket: "kunun-6135a.appspot.com",
+    messagingSenderId: "1001222263976",
+    appId: "1:1001222263976:web:88c6f6c4b054ab37aade9d",
+    measurementId: "G-7ERLY66H9K"
 };
 
 // Inisialisasi Firebase
@@ -26,12 +30,15 @@ window.login = async function() {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+        await user.reload(); // Memuat ulang status pengguna untuk memastikan emailVerified terbaru
 
         if (user.emailVerified) {
             alert("Login berhasil! Anda akan diarahkan ke halaman utama.");
             window.location.href = "Home.html"; // Redirect ke halaman utama
         } else {
-            alert("Silakan verifikasi email Anda terlebih dahulu sebelum login.");
+            alert("Email Anda belum diverifikasi! Silakan cek email Anda dan verifikasi terlebih dahulu.");
+            await sendEmailVerification(user); // Kirim ulang email verifikasi
+            alert("Email verifikasi telah dikirim ulang. Silakan periksa kotak masuk Anda.");
         }
     } catch (error) {
         alert("Gagal login: " + error.message);
