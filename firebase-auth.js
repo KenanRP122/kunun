@@ -30,8 +30,10 @@ window.login = async function() {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        await user.reload(); // Memuat ulang status pengguna untuk memastikan emailVerified terbaru
-
+        
+        // Refresh data pengguna untuk mendapatkan status terbaru dari server
+        await user.reload();
+        
         if (user.emailVerified) {
             alert("Login berhasil! Anda akan diarahkan ke halaman utama.");
             window.location.href = "Home.html"; // Redirect ke halaman utama
@@ -39,6 +41,7 @@ window.login = async function() {
             alert("Email Anda belum diverifikasi! Silakan cek email Anda dan verifikasi terlebih dahulu.");
             await sendEmailVerification(user); // Kirim ulang email verifikasi
             alert("Email verifikasi telah dikirim ulang. Silakan periksa kotak masuk Anda.");
+            await auth.signOut(); // Logout otomatis agar tidak masuk ke halaman utama
         }
     } catch (error) {
         alert("Gagal login: " + error.message);
